@@ -1,18 +1,26 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme {
-  /* Semantic Color Mapping to Tailwind Colors */
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
   
-  /* Base - Warm Beige Theme */
-  --color-background: var(--color-stone-50);
-  --color-foreground: var(--color-stone-900);
+  /* Color Palette Mapping */
+  
+  /* Backgrounds */
+  --color-background: var(--color-stone-50); /* Warm Beige */
+  --color-foreground: var(--color-stone-900); /* Deep Brown/Black */
 
-  /* Surface / Cards */
-  --color-card: var(--color-stone-100);
+  /* Cards */
+  --color-card: var(--color-stone-100); /* Light Beige Surface */
   --color-card-foreground: var(--color-stone-900);
-  
-  /* Popovers / Modals */
-  --color-popover: var(--color-stone-50);
+
+  /* Popovers */
+  --color-popover: var(--color-stone-100);
   --color-popover-foreground: var(--color-stone-900);
 
   /* Primary Action - Blue */
@@ -23,55 +31,61 @@
   --color-secondary: var(--color-purple-600);
   --color-secondary-foreground: var(--color-white);
 
-  /* Muted / Neutral */
-  --color-muted: var(--color-stone-200);
+  /* Muted */
+  --color-muted: var(--color-stone-200); /* Warm Taupe */
   --color-muted-foreground: var(--color-stone-600);
 
-  /* Accent - for highlights */
+  /* Accent - for highlights/hover */
   --color-accent: var(--color-stone-200);
   --color-accent-foreground: var(--color-stone-900);
 
-  /* Destructive / Error */
+  /* Destructive */
   --color-destructive: var(--color-red-600);
   --color-destructive-foreground: var(--color-white);
-  
-  /* Status Colors */
-  --color-success: var(--color-green-600);
-  --color-warning: var(--color-amber-500);
-  --color-info: var(--color-cyan-600);
 
-  /* Borders & Inputs */
+  /* Borders */
   --color-border: var(--color-stone-300);
-  --color-input: var(--color-stone-300);
+  --color-input: var(--color-stone-200);
   --color-ring: var(--color-blue-600);
 
-  /* Radius */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
+  /* Charts */
+  --color-chart-1: var(--color-blue-600);
+  --color-chart-2: var(--color-purple-600);
+  --color-chart-3: var(--color-teal-600);
+  --color-chart-4: var(--color-amber-600);
+  --color-chart-5: var(--color-rose-600);
 }
 
-/* Dark Mode Overrides (Optional / Future) */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--color-stone-950);
-    --color-foreground: var(--color-stone-50);
-    --color-card: var(--color-stone-900);
-    --color-card-foreground: var(--color-stone-50);
-    --color-popover: var(--color-stone-950);
-    --color-popover-foreground: var(--color-stone-50);
-    --color-muted: var(--color-stone-800);
-    --color-muted-foreground: var(--color-stone-400);
-    --color-accent: var(--color-stone-800);
-    --color-accent-foreground: var(--color-stone-50);
-    --color-border: var(--color-stone-800);
-    --color-input: var(--color-stone-800);
+/* Dark Mode Overrides */
+/* Using class selector instead of media query to support manual toggle via next-themes */
+:root.dark {
+  --color-background: var(--color-stone-950);
+  --color-foreground: var(--color-stone-50);
+  --color-card: var(--color-stone-900);
+  --color-card-foreground: var(--color-stone-50);
+  --color-popover: var(--color-stone-900);
+  --color-popover-foreground: var(--color-stone-50);
+  --color-primary: var(--color-blue-500);
+  --color-primary-foreground: var(--color-white);
+  --color-secondary: var(--color-purple-500);
+  --color-secondary-foreground: var(--color-white);
+  --color-muted: var(--color-stone-800);
+  --color-muted-foreground: var(--color-stone-400);
+  --color-accent: var(--color-stone-800);
+  --color-accent-foreground: var(--color-stone-50);
+  --color-destructive: var(--color-red-900);
+  --color-destructive-foreground: var(--color-white);
+  --color-border: var(--color-stone-800);
+  --color-input: var(--color-stone-800);
+  --color-ring: var(--color-blue-500);
+}
+
+/* Base Layer Styles */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-/* Global Styles */
-body {
-  background-color: var(--color-background);
-  color: var(--color-foreground);
-  font-family: var(--font-sans);
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
 }
