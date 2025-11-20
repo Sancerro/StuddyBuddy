@@ -19,7 +19,7 @@ export function useLogin() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/");
+      router.push("/feed");
     } catch (err: any) {
       setError("Invalid email or password.");
       console.error(err);
@@ -34,7 +34,7 @@ export function useLogin() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      router.push("/");
+      router.push("/feed");
     } catch (err: any) {
       setError("Failed to sign in with Google.");
       console.error(err);

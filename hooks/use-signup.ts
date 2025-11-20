@@ -23,7 +23,7 @@ export function useSignup() {
       await updateProfile(userCredential.user, {
         displayName: name
       });
-      router.push("/");
+      router.push("/feed");
     } catch (err: any) {
       setError(err.message || "Failed to create account.");
       console.error(err);
@@ -38,7 +38,7 @@ export function useSignup() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-      router.push("/");
+      router.push("/feed");
     } catch (err: any) {
       setError("Failed to sign up with Google.");
       console.error(err);

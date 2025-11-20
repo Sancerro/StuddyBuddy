@@ -12,15 +12,15 @@
   /* Color Palette Mapping */
   
   /* Backgrounds */
-  --color-background: var(--color-stone-50); /* Warm Beige */
+  --color-background: var(--color-orange-50); /* Warm Beige */
   --color-foreground: var(--color-stone-900); /* Deep Brown/Black */
 
   /* Cards */
-  --color-card: var(--color-stone-100); /* Light Beige Surface */
+  --color-card: var(--color-white);
   --color-card-foreground: var(--color-stone-900);
 
   /* Popovers */
-  --color-popover: var(--color-stone-100);
+  --color-popover: var(--color-white);
   --color-popover-foreground: var(--color-stone-900);
 
   /* Primary Action - Blue */
@@ -32,11 +32,11 @@
   --color-secondary-foreground: var(--color-white);
 
   /* Muted */
-  --color-muted: var(--color-stone-200); /* Warm Taupe */
+  --color-muted: var(--color-orange-100); /* Warm Muted */
   --color-muted-foreground: var(--color-stone-600);
 
   /* Accent - for highlights/hover */
-  --color-accent: var(--color-stone-200);
+  --color-accent: var(--color-orange-100);
   --color-accent-foreground: var(--color-stone-900);
 
   /* Destructive */
@@ -44,8 +44,8 @@
   --color-destructive-foreground: var(--color-white);
 
   /* Borders */
-  --color-border: var(--color-stone-300);
-  --color-input: var(--color-stone-200);
+  --color-border: var(--color-orange-200);
+  --color-input: var(--color-orange-200);
   --color-ring: var(--color-blue-600);
 
   /* Charts */
