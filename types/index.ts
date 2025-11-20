@@ -13,4 +13,19 @@ export interface Post {
   createdAt: number; // Timestamp for sorting
 }
 
+export interface Notification {
+  id: string;
+  recipientId: string;
+  senderId: string;
+  senderName: string;
+  senderAvatar?: string;
+  type: "match_request" | "match_accepted" | "match_declined";
+  status: "pending" | "accepted" | "declined"; // Add status field
+  postId?: string;
+  postTitle?: string;
+  createdAt: number;
+  read: boolean;
+}
+
 export type CreatePostData = Omit<Post, "id" | "createdAt">;
+export type CreateNotificationData = Omit<Notification, "id" | "createdAt" | "read" | "status">;

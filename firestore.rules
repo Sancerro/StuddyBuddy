@@ -12,6 +12,11 @@ service cloud.firestore {
       return resource.data.authorId == request.auth.uid;
     }
 
+    // Helper function to check if the user matches the recipientId field
+    function isRecipient(resource) {
+      return resource.data.recipientId == request.auth.uid;
+    }
+
     // Rules for the 'posts' collection
     match /posts/{postId} {
       // Allow reading posts if the user is authenticated
@@ -24,6 +29,22 @@ service cloud.firestore {
       // Allow updating or deleting posts only if the user is the author
       allow update, delete: if isAuthenticated() && isAuthor(resource);
     }
+    
+    // Rules for the 'notifications' collection
+    match /notifications/{notificationId} {
+      // Allow users to read their own notifications
+      allow read: if isAuthenticated() && isRecipient(resource);
+      
+      // Allow creating a notification for someone else (sending a request)
+      // Ensure senderId matches the current user
+      allow create: if isAuthenticated() 
+                   && request.resource.data.senderId == request.auth.uid;
+                   
+      // Allow users to update their own notifications (e.g. mark as read)
+      allow update: if isAuthenticated() && isRecipient(resource);
+      
+      // Allow users to delete their own notifications
+      allow delete: if isAuthenticated() && isRecipient(resource);
+}
   }
 }
-

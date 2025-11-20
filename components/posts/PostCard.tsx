@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Check, MoreVertical, Pencil } from "lucide-react";
+import { Calendar, Check, MoreVertical, Pencil, Pointer } from "lucide-react";
 import type { Post } from "@/types";
 import { useAuth } from "@/hooks/use-auth";
 import { useConnect } from "@/hooks/use-connect";
@@ -30,7 +30,7 @@ export function PostCard({ post }: { post: Post }) {
       toast.error("Please sign in to connect");
       return;
     }
-    connect(post.author.name);
+    connect(post.authorId, post.author.name, post.id, post.title);
   };
 
   const formattedDate = post.date 
@@ -43,20 +43,20 @@ export function PostCard({ post }: { post: Post }) {
 
   return (
     <>
-      <Card className="hover:shadow-md transition-all">
-        <CardHeader className="flex flex-row items-start gap-4 space-y-0 pb-3">
-          <Avatar>
-            <AvatarImage src={post.author.avatar} alt={post.author.name} />
-            <AvatarFallback>{post.author.initials}</AvatarFallback>
-          </Avatar>
-          <div className="flex-1">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="font-semibold text-base">{post.author.name}</h3>
+    <Card className="hover:shadow-md transition-all">
+      <CardHeader className="flex flex-row items-start gap-4 space-y-0 pb-3">
+        <Avatar>
+          <AvatarImage src={post.author.avatar} alt={post.author.name} />
+          <AvatarFallback>{post.author.initials}</AvatarFallback>
+        </Avatar>
+        <div className="flex-1">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-base">{post.author.name}</h3>
                 <p className="text-xs text-muted-foreground">Posted {timeAgo}</p>
-              </div>
+            </div>
               <div className="flex items-center gap-2">
-                <Badge variant="secondary">{post.course}</Badge>
+            <Badge variant="secondary">{post.course}</Badge>
                 {isOwner && (
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -74,21 +74,21 @@ export function PostCard({ post }: { post: Post }) {
                   </DropdownMenu>
                 )}
               </div>
-            </div>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <div>
-            <h2 className="text-xl font-bold mb-2">{post.title}</h2>
-            <p className="text-muted-foreground line-clamp-3">{post.description}</p>
-          </div>
-          <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
-            <div className="flex items-center gap-1 bg-muted px-2 py-1 rounded-md">
-              <Calendar className="h-3.5 w-3.5" />
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div>
+          <h2 className="text-xl font-bold mb-2">{post.title}</h2>
+          <p className="text-muted-foreground line-clamp-3">{post.description}</p>
+        </div>
+        <div className="flex flex-wrap gap-2 text-sm text-muted-foreground">
+          <div className="flex items-center gap-1 bg-muted px-2 py-1 rounded-md">
+            <Calendar className="h-3.5 w-3.5" />
               <span>{formattedDate}</span>
-            </div>
           </div>
-        </CardContent>
+        </div>
+      </CardContent>
         <CardFooter className="border-t pt-3 flex justify-end text-muted-foreground">
           <Button 
             size="sm" 
@@ -106,8 +106,8 @@ export function PostCard({ post }: { post: Post }) {
               "Connect"
             )}
           </Button>
-        </CardFooter>
-      </Card>
+      </CardFooter>
+    </Card>
 
       <CreateSessionDialog 
         open={showEditDialog} 

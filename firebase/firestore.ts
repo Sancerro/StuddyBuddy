@@ -10,12 +10,15 @@ import {
   updateDoc,
   deleteDoc,
   getDocs,
+  where,
 } from "firebase/firestore";
 import { db } from "./config";
-import type { Post, CreatePostData } from "@/types";
+import type { Post, CreatePostData, CreateNotificationData, Notification } from "@/types";
 
 const POSTS_COLLECTION = "posts";
+const NOTIFICATIONS_COLLECTION = "notifications";
 
+// Post Functions
 export const addPost = async (postData: CreatePostData) => {
   try {
     const docRef = await addDoc(collection(db, POSTS_COLLECTION), {
@@ -71,4 +74,61 @@ export const subscribeToPosts = (callback: (posts: Post[]) => void) => {
     });
     callback(posts);
   });
+};
+
+// Notification Functions
+export const addNotification = async (notificationData: CreateNotificationData) => {
+  try {
+    await addDoc(collection(db, NOTIFICATIONS_COLLECTION), {
+      ...notificationData,
+      status: "pending",
+      createdAt: serverTimestamp(),
+      read: false,
+    });
+  } catch (error) {
+    console.error("Error adding notification:", error);
+    throw error;
+  }
+};
+
+export const subscribeToNotifications = (userId: string, callback: (notifications: Notification[]) => void) => {
+  const q = query(
+    collection(db, NOTIFICATIONS_COLLECTION),
+    where("recipientId", "==", userId),
+    orderBy("createdAt", "desc")
+  );
+  
+  return onSnapshot(q, (snapshot) => {
+    const notifications = snapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toMillis() : Date.now(),
+      } as Notification;
+    });
+    callback(notifications);
+  });
+};
+
+export const markNotificationAsRead = async (notificationId: string) => {
+  try {
+    const docRef = doc(db, NOTIFICATIONS_COLLECTION, notificationId);
+    await updateDoc(docRef, { read: true });
+  } catch (error) {
+    console.error("Error marking notification as read:", error);
+  }
+};
+
+export const updateNotificationStatus = async (notificationId: string, status: "accepted" | "declined") => {
+  try {
+    const docRef = doc(db, NOTIFICATIONS_COLLECTION, notificationId);
+    await updateDoc(docRef, { 
+      status,
+      read: true // Auto-read when responding
+    });
+  } catch (error) {
+    console.error("Error updating notification status:", error);
+    throw error;
+  }
 };

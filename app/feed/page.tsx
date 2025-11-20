@@ -6,7 +6,8 @@ import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/mode-toggle";
 import { PostList } from "@/components/posts/PostList";
 import { CreateSessionDialog } from "@/components/posts/CreateSessionDialog";
-import { GraduationCap, Plus, Search, Bell, MessageSquare, Loader2, LogOut } from "lucide-react";
+import { NotificationList } from "@/components/notifications/NotificationList";
+import { GraduationCap, Plus, Search, MessageSquare, Loader2, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePosts } from "@/hooks/use-posts";
 import { useAuth } from "@/hooks/use-auth";
@@ -47,21 +48,19 @@ export default function FeedPage() {
             <Button variant="ghost" size="icon" className="text-muted-foreground">
               <MessageSquare className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="text-muted-foreground">
-              <Bell className="h-5 w-5" />
-            </Button>
+            <NotificationList />
             <ModeToggle />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Avatar className="h-8 w-8 cursor-pointer">
+            <Avatar className="h-8 w-8 cursor-pointer">
                   <AvatarImage src={user?.photoURL || "https://github.com/shadcn.png"} alt="@shadcn" />
                   <AvatarFallback>{user?.displayName?.slice(0, 2).toUpperCase() || "CN"}</AvatarFallback>
-                </Avatar>
+            </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout} className="text-destructive focus:text-destructive">
+                <DropdownMenuItem onClick={logout} className="text-destructive focus:text-destructive cursor-pointer">
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>
