@@ -1,19 +1,27 @@
-import { useState, useEffect } from "react";
-import { subscribeToPosts } from "@/firebase/firestore";
+import { useQuery } from "@tanstack/react-query";
+import { collection, query, orderBy, getDocs, Timestamp } from "firebase/firestore";
+import { db } from "@/firebase/config";
 import type { Post } from "@/types";
 
-export function usePosts() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+const POSTS_COLLECTION = "posts";
 
-  useEffect(() => {
-    const unsubscribe = subscribeToPosts((newPosts) => {
-      setPosts(newPosts);
-      setLoading(false);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  return { posts, loading };
+async function fetchPosts(): Promise<Post[]> {
+  const q = query(collection(db, POSTS_COLLECTION), orderBy("createdAt", "desc"));
+  const snapshot = await getDocs(q);
+  
+  return snapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      createdAt: data.createdAt instanceof Timestamp ? data.createdAt.toMillis() : Date.now(),
+    } as Post;
+  });
 }
 
+export function usePosts() {
+  return useQuery({
+    queryKey: ["posts"],
+    queryFn: fetchPosts,
+  });
+}

@@ -6,12 +6,12 @@ import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/mode-toggle";
 import { PostList } from "@/components/posts/PostList";
 import { CreateSessionDialog } from "@/components/posts/CreateSessionDialog";
-import { GraduationCap, Plus, Search, Bell, MessageSquare } from "lucide-react";
+import { GraduationCap, Plus, Search, Bell, MessageSquare, Loader2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePosts } from "@/hooks/use-posts";
 
 export default function FeedPage() {
-  const { posts } = usePosts();
+  const { data: posts, isLoading, error } = usePosts();
 
   return (
     <div className="min-h-screen bg-background">
@@ -67,7 +67,17 @@ export default function FeedPage() {
           </div>
 
           {/* Content */}
-          <PostList posts={posts} />
+          {isLoading ? (
+            <div className="flex justify-center py-8">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            </div>
+          ) : error ? (
+            <div className="text-center py-8 text-destructive">
+              Failed to load posts. Please try again later.
+            </div>
+          ) : (
+            <PostList posts={posts || []} />
+          )}
         </div>
       </main>
     </div>
