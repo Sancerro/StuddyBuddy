@@ -1,5 +1,4 @@
-// Utility functions and helpers
-// Shared utility functions will be added here
-
-export {};
+// Re-export all utilities for backward compatibility
+export { cn } from "./cn";
+export { getInitials } from "./user";
 
