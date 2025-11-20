@@ -6,12 +6,22 @@ import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/mode-toggle";
 import { PostList } from "@/components/posts/PostList";
 import { CreateSessionDialog } from "@/components/posts/CreateSessionDialog";
-import { GraduationCap, Plus, Search, Bell, MessageSquare, Loader2 } from "lucide-react";
+import { GraduationCap, Plus, Search, Bell, MessageSquare, Loader2, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePosts } from "@/hooks/use-posts";
+import { useAuth } from "@/hooks/use-auth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function FeedPage() {
   const { data: posts, isLoading, error } = usePosts();
+  const { user, logout } = useAuth();
 
   return (
     <div className="min-h-screen bg-background">
@@ -41,10 +51,22 @@ export default function FeedPage() {
               <Bell className="h-5 w-5" />
             </Button>
             <ModeToggle />
-            <Avatar className="h-8 w-8 cursor-pointer">
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="h-8 w-8 cursor-pointer">
+                  <AvatarImage src={user?.photoURL || "https://github.com/shadcn.png"} alt="@shadcn" />
+                  <AvatarFallback>{user?.displayName?.slice(0, 2).toUpperCase() || "CN"}</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={logout} className="text-destructive focus:text-destructive">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </header>

@@ -11,8 +11,6 @@ export interface Post {
   course: string;
   date: string; // ISO string or formatted date string
   createdAt: number; // Timestamp for sorting
-  likes: number;
-  comments: number;
 }
 
-export type CreatePostData = Omit<Post, "id" | "createdAt" | "likes" | "comments">;
+export type CreatePostData = Omit<Post, "id" | "createdAt">;
