@@ -4,24 +4,8 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Clock, MessageSquare, ThumbsUp } from "lucide-react";
-
-export interface Post {
-  id: string;
-  author: {
-    name: string;
-    avatar?: string;
-    initials: string;
-  };
-  title: string;
-  description: string;
-  course: string;
-  level: "Beginner" | "Intermediate" | "Advanced";
-  format: "Online" | "In-Person" | "Hybrid";
-  date: string;
-  likes: number;
-  comments: number;
-}
+import { Calendar, MessageSquare, ThumbsUp } from "lucide-react";
+import type { Post } from "@/types";
 
 export function PostCard({ post }: { post: Post }) {
   return (
@@ -51,13 +35,6 @@ export function PostCard({ post }: { post: Post }) {
             <Calendar className="h-3.5 w-3.5" />
             <span>{post.date}</span>
           </div>
-          <div className="flex items-center gap-1 bg-muted px-2 py-1 rounded-md">
-            <Clock className="h-3.5 w-3.5" />
-            <span>{post.format}</span>
-          </div>
-          <Badge variant="outline" className="font-normal">
-            {post.level}
-          </Badge>
         </div>
       </CardContent>
       <CardFooter className="border-t pt-3 flex justify-between text-muted-foreground">
@@ -76,4 +53,3 @@ export function PostCard({ post }: { post: Post }) {
     </Card>
   );
 }
-

@@ -1,10 +1,9 @@
 "use client";
 
 import { EmptyState } from "@/components/common/EmptyState";
-import { PostCard, type Post } from "./PostCard";
+import { PostCard } from "./PostCard";
+import type { Post } from "@/types";
 import { Search } from "lucide-react";
-
-const noop = () => {};
 
 interface PostListProps {
   posts: Post[];
@@ -17,7 +16,7 @@ export function PostList({ posts }: PostListProps) {
         title="No posts found"
         description="There are no study sessions available right now. Be the first to create one!"
         actionLabel="Create Study Session"
-        onAction={noop}
+        onAction={() => {}}
         icon={Search}
       />
     );
@@ -31,4 +30,3 @@ export function PostList({ posts }: PostListProps) {
     </div>
   );
 }
-
