@@ -20,7 +20,7 @@ export function useLogin() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/feed");
-    } catch (err: any) {
+    } catch (err) {
       setError("Invalid email or password.");
       console.error(err);
     } finally {
@@ -35,7 +35,7 @@ export function useLogin() {
     try {
       await signInWithPopup(auth, provider);
       router.push("/feed");
-    } catch (err: any) {
+    } catch (err) {
       setError("Failed to sign in with Google.");
       console.error(err);
     } finally {

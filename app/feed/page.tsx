@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/mode-toggle";
 import { PostList } from "@/components/posts/PostList";
-import { Post } from "@/components/posts/PostCard";
+import type { Post } from "@/components/posts/PostCard";
 import { GraduationCap, Plus, Search, Bell, MessageSquare } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 

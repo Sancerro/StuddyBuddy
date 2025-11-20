@@ -24,8 +24,9 @@ export function useSignup() {
         displayName: name
       });
       router.push("/feed");
-    } catch (err: any) {
-      setError(err.message || "Failed to create account.");
+    } catch (err) {
+      const message = err instanceof Error && err.message ? err.message : "Failed to create account.";
+      setError(message);
       console.error(err);
     } finally {
       setLoading(false);
@@ -39,7 +40,7 @@ export function useSignup() {
     try {
       await signInWithPopup(auth, provider);
       router.push("/feed");
-    } catch (err: any) {
+    } catch (err) {
       setError("Failed to sign up with Google.");
       console.error(err);
     } finally {
