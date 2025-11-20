@@ -4,10 +4,24 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MessageSquare, ThumbsUp } from "lucide-react";
+import { Calendar, MessageSquare, ThumbsUp, Check } from "lucide-react";
 import type { Post } from "@/types";
+import { useAuth } from "@/hooks/use-auth";
+import { useConnect } from "@/hooks/use-connect";
+import { toast } from "sonner";
 
 export function PostCard({ post }: { post: Post }) {
+  const { isConnected, isLoading, connect } = useConnect();
+  const { user } = useAuth();
+
+  const handleConnect = () => {
+    if (!user) {
+      toast.error("Please sign in to connect");
+      return;
+    }
+    connect(post.author.name);
+  };
+
   return (
     <Card className="hover:shadow-md transition-all">
       <CardHeader className="flex flex-row items-start gap-4 space-y-0 pb-3">
@@ -48,7 +62,22 @@ export function PostCard({ post }: { post: Post }) {
             <span>{post.comments}</span>
           </Button>
         </div>
-        <Button size="sm">Connect</Button>
+        <Button 
+          size="sm" 
+          onClick={handleConnect}
+          disabled={isConnected || isLoading || !user || user.uid === post.authorId}
+          variant={isConnected ? "secondary" : "default"}
+          className={isConnected ? "text-green-600" : ""}
+        >
+          {isConnected ? (
+            <>
+              <Check className="mr-2 h-4 w-4" />
+              Request Sent
+            </>
+          ) : (
+            "Connect"
+          )}
+        </Button>
       </CardFooter>
     </Card>
   );
