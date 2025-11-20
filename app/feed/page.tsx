@@ -5,18 +5,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ModeToggle } from "@/components/mode-toggle";
 import { PostList } from "@/components/posts/PostList";
-import type { Post } from "@/components/posts/PostCard";
+import { CreateSessionDialog } from "@/components/posts/CreateSessionDialog";
 import { GraduationCap, Plus, Search, Bell, MessageSquare } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
-// Mock data for now - will be replaced with Firebase data
-const MOCK_POSTS: Post[] = []; 
+import { usePosts } from "@/hooks/use-posts";
 
 export default function FeedPage() {
+  const { posts } = usePosts();
+
   return (
     <div className="min-h-screen bg-background">
       {/* App Navbar */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <div className="flex items-center gap-6">
             <Link href="/feed" className="flex items-center gap-2 font-bold text-xl">
@@ -59,16 +59,17 @@ export default function FeedPage() {
                 Find a partner or join a group session for your courses.
               </p>
             </div>
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" /> Create Session
-            </Button>
+            <CreateSessionDialog>
+              <Button className="gap-2">
+                <Plus className="h-4 w-4" /> Create Session
+              </Button>
+            </CreateSessionDialog>
           </div>
 
           {/* Content */}
-          <PostList posts={MOCK_POSTS} />
+          <PostList posts={posts} />
         </div>
       </main>
     </div>
   );
 }
-
