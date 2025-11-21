@@ -11,6 +11,7 @@ import { GraduationCap, Plus, Search, MessageSquare, Loader2, LogOut } from "luc
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePosts } from "@/hooks/use-posts";
 import { useAuth } from "@/hooks/use-auth";
+import { getInitials } from "@/lib/utils/user";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -52,10 +53,10 @@ export default function FeedPage() {
             <ModeToggle />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-            <Avatar className="h-8 w-8 cursor-pointer">
+                <Avatar className="h-8 w-8 cursor-pointer">
                   <AvatarImage src={user?.photoURL || "https://github.com/shadcn.png"} alt="@shadcn" />
-                  <AvatarFallback>{user?.displayName?.slice(0, 2).toUpperCase() || "CN"}</AvatarFallback>
-            </Avatar>
+                  <AvatarFallback>{getInitials(user?.displayName)}</AvatarFallback>
+                </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>

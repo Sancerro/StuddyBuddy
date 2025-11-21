@@ -17,7 +17,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { CreateSessionDialog } from "./CreateSessionDialog";
-import { format, formatDistanceToNow } from "date-fns";
+import { formatDate, formatTimeAgo } from "@/lib/utils/date";
+import { getInitials } from "@/lib/utils/user";
 
 export function PostCard({ post }: { post: Post }) {
   const { isConnected, isLoading, connect } = useConnect();
@@ -25,13 +26,8 @@ export function PostCard({ post }: { post: Post }) {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const isOwner = user?.uid === post.authorId;
 
-  const formattedDate = post.date 
-    ? format(post.date instanceof Date ? post.date : new Date(post.date), "PPP") 
-    : "No date";
-
-  const timeAgo = post.createdAt 
-    ? formatDistanceToNow(post.createdAt, { addSuffix: true }) 
-    : "";
+  const formattedDate = formatDate(post.date);
+  const timeAgo = formatTimeAgo(post.createdAt);
   const handleConnect = () => {
     if (!user) {
       toast.error("Please sign in to connect");
@@ -46,7 +42,7 @@ export function PostCard({ post }: { post: Post }) {
         <CardHeader className="flex flex-row items-start gap-4 space-y-0">
           <Avatar>
             <AvatarImage src={post.author.avatar} alt={post.author.name} />
-            <AvatarFallback>{post.author.initials}</AvatarFallback>
+            <AvatarFallback>{getInitials(post.author.name)}</AvatarFallback>
           </Avatar>
           <div className="flex-1">
             <div className="flex items-center justify-between">
@@ -86,8 +82,8 @@ export function PostCard({ post }: { post: Post }) {
               <Calendar className="h-3.5 w-3.5" />
               <span>{formattedDate}</span>
             </div>
-            <Button 
-              size="sm" 
+            <Button
+              size="sm"
               onClick={handleConnect}
               disabled={isConnected || isLoading || !user || isOwner}
               variant={isConnected ? "secondary" : "default"}
@@ -106,8 +102,8 @@ export function PostCard({ post }: { post: Post }) {
         </CardContent>
       </Card>
 
-      <CreateSessionDialog 
-        open={showEditDialog} 
+      <CreateSessionDialog
+        open={showEditDialog}
         onOpenChange={setShowEditDialog}
         postToEdit={post}
         mode="edit"
