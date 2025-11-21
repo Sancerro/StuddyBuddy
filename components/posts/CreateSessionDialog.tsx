@@ -1,11 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Trash2 } from "lucide-react";
-import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -43,12 +40,8 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { cn } from "@/lib/utils/cn";
-import { getInitials } from "@/lib/utils/user";
-import { addPost, updatePost, deletePost } from "@/firebase/firestore";
-import { useAuth } from "@/hooks/use-auth";
-import { createSessionSchema, type CreateSessionFormValues } from "@/lib/schemas";
-import { toast } from "sonner";
 import type { Post } from "@/types";
+import { useSessionForm } from "@/hooks/use-session-form";
 
 interface CreateSessionDialogProps {
   children?: React.ReactNode;
@@ -69,77 +62,27 @@ export function CreateSessionDialog({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const open = controlledOpen ?? uncontrolledOpen;
   const setOpen = setControlledOpen ?? setUncontrolledOpen;
-  
-  const { user } = useAuth();
-  
-  const form = useForm<CreateSessionFormValues>({
-    resolver: zodResolver(createSessionSchema),
-    defaultValues: {
-      title: postToEdit?.title ?? "",
-      description: postToEdit?.description ?? "",
-      course: postToEdit?.course ?? "",
-      date: postToEdit ? new Date(postToEdit.date) : undefined,
-    },
+
+  const { form, onSubmit, deleteSession } = useSessionForm({
+    postToEdit,
+    mode,
+    isOpen: !!open,
   });
 
-  // Reset form when dialog opens/closes or postToEdit changes
-  React.useEffect(() => {
-    if (open) {
-      form.reset({
-        title: postToEdit?.title ?? "",
-        description: postToEdit?.description ?? "",
-        course: postToEdit?.course ?? "",
-        date: postToEdit ? new Date(postToEdit.date) : undefined,
-      });
-    }
-  }, [open, postToEdit, form]);
-
-  async function onSubmit(values: CreateSessionFormValues) {
-    if (!user) return;
-
-    try {
-      const dateISO = values.date.toISOString();
-      
-      if (mode === "edit" && postToEdit) {
-        await updatePost(postToEdit.id, {
-          ...values,
-          date: dateISO,
-        });
-        toast.success("Session updated successfully!");
-      } else {
-      await addPost({
-        ...values,
-          date: dateISO,
-        authorId: user.uid,
-        author: {
-          name: user.displayName || "Anonymous",
-          avatar: user.photoURL || undefined,
-            initials: getInitials(user.displayName),
-        },
-      });
-        toast.success("Session created successfully!");
-      }
-      setOpen(false);
-      form.reset();
-    } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong. Please try again.");
-    }
-  }
+  const handleSubmit = form.handleSubmit(async (values) => {
+    await onSubmit(values);
+    setShowDeleteDialog(false);
+    setOpen(false);
+    form.reset();
+  });
 
   const handleDelete = async () => {
-    if (!postToEdit) return;
-    
-    try {
-      await deletePost(postToEdit.id);
-      toast.success("Session deleted successfully");
-      setShowDeleteDialog(false);
-      setOpen(false);
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to delete session");
-    }
+    await deleteSession();
+    setShowDeleteDialog(false);
+    setOpen(false);
   };
+
+  const handleOpenDelete = () => setShowDeleteDialog(true);
 
   return (
     <>
@@ -155,7 +98,10 @@ export function CreateSessionDialog({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="title"
@@ -176,7 +122,7 @@ export function CreateSessionDialog({
                 <FormItem>
                   <FormLabel>Course</FormLabel>
                   <FormControl>
-                    <Input placeholder="MATH 101" {...field} />
+                    <Input placeholder="MAT 101" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -215,7 +161,7 @@ export function CreateSessionDialog({
                         disabled={(date) =>
                           date < new Date()
                         }
-                        initialFocus
+                        autoFocus
                       />
                     </PopoverContent>
                   </Popover>
@@ -245,7 +191,7 @@ export function CreateSessionDialog({
                   <Button 
                     type="button" 
                     variant="destructive" 
-                    onClick={() => setShowDeleteDialog(true)}
+                    onClick={handleOpenDelete}
                     className="w-auto px-3"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -270,7 +216,10 @@ export function CreateSessionDialog({
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+            <AlertDialogAction
+              onClick={handleDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>
