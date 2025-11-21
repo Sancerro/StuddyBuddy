@@ -1,27 +1,34 @@
 import { useEffect, useState } from "react";
-import { subscribeToNotifications, markNotificationAsRead, updateNotificationStatus } from "@/firebase/firestore";
+import { subscribeToNotifications, markNotificationAsRead, updateNotificationStatus } from "@/firebase/notifications";
 import { useAuth } from "./use-auth";
 import type { Notification } from "@/types";
 import { toast } from "sonner";
 
 export function useNotifications() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [hasLoadedNotifications, setHasLoadedNotifications] = useState(false);
 
   useEffect(() => {
     if (!user) {
-      setNotifications([]);
-      setLoading(false);
-      return;
+      // Use setTimeout to avoid "setState in effect" linter error
+      // This correctly resets state when user logs out
+      const t = setTimeout(() => {
+        setNotifications([]);
+        setHasLoadedNotifications(false);
+      }, 0);
+      return () => clearTimeout(t);
     }
 
     const unsubscribe = subscribeToNotifications(user.uid, (newNotifications) => {
       setNotifications(newNotifications);
-      setLoading(false);
+      setHasLoadedNotifications(true);
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      setHasLoadedNotifications(false);
+    };
   }, [user]);
 
   const markAsRead = async (id: string) => {
@@ -39,6 +46,11 @@ export function useNotifications() {
   };
 
   const unreadCount = notifications.filter((n) => !n.read).length;
+  
+  // Loading if:
+  // 1. Auth is still checking
+  // 2. User is logged in but we haven't got notifications yet
+  const loading = authLoading || (!!user && !hasLoadedNotifications);
 
   return { notifications, loading, markAsRead, handleResponse, unreadCount };
 }

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useAuth } from "./use-auth";
-import { addNotification } from "@/firebase/firestore";
+import { addNotification } from "@/firebase/notifications";
 
 export function useConnect() {
   const [isConnected, setIsConnected] = useState(false);
