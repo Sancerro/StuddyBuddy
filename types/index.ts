@@ -9,7 +9,7 @@ export interface Post {
   title: string;
   description: string;
   course: string;
-  date: string; // ISO string or formatted date string
+  date: string | Date; // Stored as Firestore Timestamp -> serialized to ISO or Date in client
   createdAt: number; // Timestamp for sorting
 }
 
