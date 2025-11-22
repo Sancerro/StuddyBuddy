@@ -12,72 +12,72 @@
   /* Color Palette Mapping */
   
   /* Backgrounds */
-  --color-background: var(--color-orange-50); /* Warm Beige */
-  --color-foreground: var(--color-stone-900); /* Deep Brown/Black */
+  --color-background: var(--color-slate-50); /* Clean, Academic White */
+  --color-foreground: var(--color-slate-900); /* Deep Slate */
 
   /* Cards */
   --color-card: var(--color-white);
-  --color-card-foreground: var(--color-stone-900);
+  --color-card-foreground: var(--color-slate-900);
 
   /* Popovers */
   --color-popover: var(--color-white);
-  --color-popover-foreground: var(--color-stone-900);
+  --color-popover-foreground: var(--color-slate-900);
 
-  /* Primary Action - Blue */
-  --color-primary: var(--color-blue-600);
+  /* Primary Action - Indigo (Focus) */
+  --color-primary: var(--color-indigo-600);
   --color-primary-foreground: var(--color-white);
 
-  /* Secondary Action - Purple */
-  --color-secondary: var(--color-purple-600);
+  /* Secondary Action - Teal (Growth) */
+  --color-secondary: var(--color-teal-500);
   --color-secondary-foreground: var(--color-white);
 
   /* Muted */
-  --color-muted: var(--color-orange-100); /* Warm Muted */
-  --color-muted-foreground: var(--color-stone-600);
+  --color-muted: var(--color-slate-100);
+  --color-muted-foreground: var(--color-slate-500);
 
   /* Accent - for highlights/hover */
-  --color-accent: var(--color-orange-100);
-  --color-accent-foreground: var(--color-stone-900);
+  --color-accent: var(--color-indigo-50);
+  --color-accent-foreground: var(--color-indigo-900);
 
   /* Destructive */
   --color-destructive: var(--color-red-600);
   --color-destructive-foreground: var(--color-white);
 
   /* Borders */
-  --color-border: var(--color-orange-200);
-  --color-input: var(--color-orange-200);
-  --color-ring: var(--color-blue-600);
+  --color-border: var(--color-slate-200);
+  --color-input: var(--color-slate-200);
+  --color-ring: var(--color-indigo-600);
 
   /* Charts */
-  --color-chart-1: var(--color-blue-600);
-  --color-chart-2: var(--color-purple-600);
-  --color-chart-3: var(--color-teal-600);
-  --color-chart-4: var(--color-amber-600);
-  --color-chart-5: var(--color-rose-600);
+  --color-chart-1: var(--color-indigo-600);
+  --color-chart-2: var(--color-teal-500);
+  --color-chart-3: var(--color-emerald-500);
+  --color-chart-4: var(--color-amber-500);
+  --color-chart-5: var(--color-rose-500);
 }
 
 /* Dark Mode Overrides */
 /* Using class selector instead of media query to support manual toggle via next-themes */
 :root.dark {
-  --color-background: var(--color-stone-950);
-  --color-foreground: var(--color-stone-50);
-  --color-card: var(--color-stone-900);
-  --color-card-foreground: var(--color-stone-50);
-  --color-popover: var(--color-stone-900);
-  --color-popover-foreground: var(--color-stone-50);
-  --color-primary: var(--color-blue-500);
+  --color-background: var(--color-slate-950);
+  --color-foreground: var(--color-slate-50);
+  --color-card: var(--color-slate-900);
+  --color-card-foreground: var(--color-slate-50);
+  --color-popover: var(--color-slate-900);
+  --color-popover-foreground: var(--color-slate-50);
+  --color-primary: var(--color-indigo-500);
   --color-primary-foreground: var(--color-white);
-  --color-secondary: var(--color-purple-500);
-  --color-secondary-foreground: var(--color-white);
-  --color-muted: var(--color-stone-800);
-  --color-muted-foreground: var(--color-stone-400);
-  --color-accent: var(--color-stone-800);
-  --color-accent-foreground: var(--color-stone-50);
+  --color-secondary: var(--color-teal-400);
+  --color-secondary-foreground: var(--color-slate-950);
+  --color-muted: var(--color-slate-800);
+  --color-muted-foreground: var(--color-slate-400);
+  --color-accent: var(--color-slate-800);
+  --color-accent-foreground: var(--color-slate-50);
   --color-destructive: var(--color-red-900);
   --color-destructive-foreground: var(--color-white);
-  --color-border: var(--color-stone-800);
-  --color-input: var(--color-stone-800);
-  --color-ring: var(--color-blue-500);
+  --color-border: var(--color-slate-800);
+  --color-input: var(--color-slate-800);
+  --color-ring: var(--color-indigo-500);
 }
 
 /* Base Layer Styles */
